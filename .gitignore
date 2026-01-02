@@ -1,0 +1,19 @@
+# Backend
+/backend/vendor/
+/backend/.env
+
+# Frontend
+/frontend/node_modules/
+/frontend/build/
+/frontend/.env
+
+# OS / editorer
+.DS_Store
+*.log
+*.cache
+.vscode/
+
+# Node/npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

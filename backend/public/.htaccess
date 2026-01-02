@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# Om filen eller mappen finns, använd den
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Skicka allt annat till index.php
+RewriteRule ^ index.php [QSA,L]

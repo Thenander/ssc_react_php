@@ -1,0 +1,11 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "/Applications/XAMPP/xamppfiles/bin/php -S localhost:8000 -t public"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
