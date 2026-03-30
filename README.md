@@ -68,10 +68,10 @@ Default URL: `http://localhost:8000`
 
 # TODO
 
-1. Create the database `sscdb` (if not already created):
+1. Create the database `bimbodb` (if not already created):
 
 ```sql
-CREATE DATABASE sscdb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE DATABASE bimbodb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 ```
 
 2. Import tables (example):

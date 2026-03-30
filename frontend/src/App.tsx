@@ -1,38 +1,50 @@
-import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 
-type Track = {
-  id: number;
-  title: string;
-  type: string;
-  release_id: number;
-  created: string;
-  changed: string;
-};
+import Home from './pages/Home';
+import ReleasePage from './pages/ReleasePage';
+import TrackPage from './pages/TrackPage';
+import SourcesPage from './pages/SourcesPage';
+import SourcePage from './pages/SourcePage';
+import SamplePage from './pages/SamplePage';
 
-function App() {
-  const [tracks, setTracks] = useState<Track[]>([]);
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminReleases from './pages/admin/AdminReleases';
+import AdminTracks from './pages/admin/AdminTracks';
+import AdminSources from './pages/admin/AdminSources';
+import AdminSamples from './pages/admin/AdminSamples';
 
-  useEffect(() => {
-    fetch("http://localhost:8000/api/tracks")
-      .then((res) => res.json())
-      .then((data) => {
-        setTracks(data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
-
+function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div>
-      <h1>Tracks</h1>
-      <ul>
-        {tracks.map((track) => (
-          <li key={track.id}>
-            {track.title} (release: {track.title}, released: {track.created})
-          </li>
-        ))}
-      </ul>
+    <div className="min-h-screen bg-gray-950 text-white">
+      <Navbar />
+      {children}
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Public */}
+        <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+        <Route path="/releases/:id" element={<PublicLayout><ReleasePage /></PublicLayout>} />
+        <Route path="/tracks/:id" element={<PublicLayout><TrackPage /></PublicLayout>} />
+        <Route path="/sources" element={<PublicLayout><SourcesPage /></PublicLayout>} />
+        <Route path="/sources/:id" element={<PublicLayout><SourcePage /></PublicLayout>} />
+        <Route path="/samples/:id" element={<PublicLayout><SamplePage /></PublicLayout>} />
+
+        {/* Admin */}
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/releases" element={<ProtectedRoute><AdminReleases /></ProtectedRoute>} />
+        <Route path="/admin/tracks" element={<ProtectedRoute><AdminTracks /></ProtectedRoute>} />
+        <Route path="/admin/sources" element={<ProtectedRoute><AdminSources /></ProtectedRoute>} />
+        <Route path="/admin/samples" element={<ProtectedRoute><AdminSamples /></ProtectedRoute>} />
+      </Routes>
+    </BrowserRouter>
+  );
+}

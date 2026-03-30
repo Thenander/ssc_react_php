@@ -4,37 +4,37 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Repositories\TrackRepository;
+use App\Repositories\ReleaseRepository;
 use PDO;
 
-class TrackController
+class ReleaseController
 {
-    private TrackRepository $repo;
+    private ReleaseRepository $repo;
 
     public function __construct(PDO $pdo)
     {
-        $this->repo = new TrackRepository($pdo);
+        $this->repo = new ReleaseRepository($pdo);
     }
 
     public function index(Request $request, Response $response): Response
     {
-        $tracks = $this->repo->all();
-        $response->getBody()->write(json_encode($tracks));
+        $releases = $this->repo->all();
+        $response->getBody()->write(json_encode($releases));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function show(Request $request, Response $response, array $args): Response
     {
-        $track = $this->repo->find((int) $args['id']);
+        $release = $this->repo->find((int) $args['id']);
 
-        if (!$track) {
+        if (!$release) {
             $response->getBody()->write(json_encode(['error' => 'Not found']));
             return $response->withStatus(404)->withHeader('Content-Type', 'application/json');
         }
 
-        $track['samples'] = $this->repo->findSamples((int) $args['id']);
+        $release['tracks'] = $this->repo->findTracks((int) $args['id']);
 
-        $response->getBody()->write(json_encode($track));
+        $response->getBody()->write(json_encode($release));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
@@ -48,12 +48,14 @@ class TrackController
         }
 
         $id = $this->repo->create([
-            'title'      => trim($data['title']),
-            'release_id' => isset($data['release_id']) ? (int) $data['release_id'] : null,
-            'notes'      => isset($data['notes']) ? trim($data['notes']) : null,
+            'title'   => trim($data['title']),
+            'artist'  => isset($data['artist']) ? trim($data['artist']) : null,
+            'year'    => isset($data['year']) ? (int) $data['year'] : null,
+            'type_id' => isset($data['type_id']) ? (int) $data['type_id'] : null,
+            'notes'   => isset($data['notes']) ? trim($data['notes']) : null,
         ]);
 
-        $response->getBody()->write(json_encode(['message' => 'Track created', 'id' => $id]));
+        $response->getBody()->write(json_encode(['message' => 'Release created', 'id' => $id]));
         return $response->withStatus(201)->withHeader('Content-Type', 'application/json');
     }
 
@@ -73,12 +75,14 @@ class TrackController
         }
 
         $this->repo->update($id, [
-            'title'      => trim($data['title']),
-            'release_id' => isset($data['release_id']) ? (int) $data['release_id'] : null,
-            'notes'      => isset($data['notes']) ? trim($data['notes']) : null,
+            'title'   => trim($data['title']),
+            'artist'  => isset($data['artist']) ? trim($data['artist']) : null,
+            'year'    => isset($data['year']) ? (int) $data['year'] : null,
+            'type_id' => isset($data['type_id']) ? (int) $data['type_id'] : null,
+            'notes'   => isset($data['notes']) ? trim($data['notes']) : null,
         ]);
 
-        $response->getBody()->write(json_encode(['message' => 'Track updated']));
+        $response->getBody()->write(json_encode(['message' => 'Release updated']));
         return $response->withHeader('Content-Type', 'application/json');
     }
 
@@ -92,7 +96,7 @@ class TrackController
         }
 
         $this->repo->delete($id);
-        $response->getBody()->write(json_encode(['message' => 'Track deleted']));
+        $response->getBody()->write(json_encode(['message' => 'Release deleted']));
         return $response->withHeader('Content-Type', 'application/json');
     }
 }
