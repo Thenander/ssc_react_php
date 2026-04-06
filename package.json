@@ -1,0 +1,12 @@
+{
+  "name": "ssc",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "php -S localhost:8000 -t backend/public"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

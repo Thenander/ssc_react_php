@@ -28,7 +28,7 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         {/* Public */}
         <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />

@@ -13,6 +13,9 @@
 *.cache
 .vscode/
 
+# Root
+/node_modules/
+
 # Node/npm
 npm-debug.log*
 yarn-debug.log*

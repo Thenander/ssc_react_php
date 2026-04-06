@@ -1,9 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `bimbodb` DEFAULT CHARACTER
-SET
-    utf8mb4 COLLATE utf8mb4_general_ci;
-
-USE `bimbodb`;
-
 -- ----------------------------
 -- types
 -- ----------------------------

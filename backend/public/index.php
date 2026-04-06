@@ -15,6 +15,8 @@ $pdo = require __DIR__ . '/../config/database.php';
 
 $app = AppFactory::create();
 
+$basePath = $_ENV['APP_BASE_PATH'] ?? '';
+if ($basePath !== '') $app->setBasePath($basePath);
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->addErrorMiddleware(true, true, true);
@@ -27,7 +29,7 @@ $app->addErrorMiddleware(true, true, true);
 $app->add(function ($request, $handler) {
     $response = $handler->handle($request);
     return $response
-        ->withHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+        ->withHeader('Access-Control-Allow-Origin', $_ENV['CORS_ORIGIN'] ?? 'http://localhost:3000')
         ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });

@@ -169,6 +169,64 @@ Deleting a release or source that has linked content shows a warning with the nu
 
 ---
 
+## Local Development
+
+From the project root:
+
+```bash
+npm install   # first time only
+npm run dev
+```
+
+Starts both frontend (`localhost:3000`) and backend (`localhost:8000`) simultaneously.
+
+---
+
+## Deploy
+
+### 1. Build frontend
+
+```bash
+cd frontend
+npm run build
+```
+
+### 2. Upload files via SCP
+
+```bash
+scp -r "/path/to/frontend/build/." user@host:public_html/cultivatedbimbo/
+scp -r "/path/to/backend/src" user@host:public_html/cultivatedbimbo/
+scp -r "/path/to/backend/config" user@host:public_html/cultivatedbimbo/
+scp "/path/to/backend/public/index.php" user@host:public_html/cultivatedbimbo/api/
+scp "/path/to/backend/public/.htaccess" user@host:public_html/cultivatedbimbo/api/
+```
+
+### 3. Install PHP dependencies on server
+
+```bash
+# SSH into server, then:
+cd public_html/cultivatedbimbo
+composer install --no-dev --optimize-autoloader
+```
+
+Only needed when `composer.json` or `composer.lock` has changed.
+
+### 4. Environment variables
+
+Create a `.env` file on the server (see `backend/.env.example`). Required variables:
+
+```env
+DB_HOST=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+JWT_SECRET=
+CORS_ORIGIN=
+APP_BASE_PATH=
+```
+
+---
+
 ## Tips
 
 - Start the **backend before** the frontend

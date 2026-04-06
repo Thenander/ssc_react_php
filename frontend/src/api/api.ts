@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:8000/api';
+const BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000/api';
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem('token');
