@@ -59,12 +59,17 @@ export default function TrackPage() {
                 )}
               </div>
               {sample.source_title && (
-                <Link
-                  to={`/sources/${sample.source_id}`}
-                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors ml-4 shrink-0"
-                >
-                  {sample.source_title}
-                </Link>
+                <div className="ml-4 shrink-0 text-right">
+                  <Link
+                    to={`/sources/${sample.source_id}`}
+                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    {sample.source_title}
+                  </Link>
+                  {sample.producer && (
+                    <div className="text-gray-500 text-xs mt-0.5">{sample.producer}</div>
+                  )}
+                </div>
               )}
             </div>
           </li>

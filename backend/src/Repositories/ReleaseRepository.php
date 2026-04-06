@@ -16,10 +16,12 @@ class ReleaseRepository
     public function all(): array
     {
         $stmt = $this->db->query("
-            SELECT r.*, t.text AS type_text
+            SELECT r.*, t.text AS type_text,
+                   (SELECT COUNT(*) FROM tracks tr WHERE tr.release_id = r.id) AS track_count,
+                   (SELECT COUNT(*) FROM track_samples_ref tsr JOIN tracks tr ON tsr.track_id = tr.id WHERE tr.release_id = r.id) AS sample_count
             FROM releases r
             LEFT JOIN types t ON r.type_id = t.id
-            ORDER BY r.artist, r.year
+            ORDER BY r.year, r.artist
         ");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -40,10 +42,11 @@ class ReleaseRepository
     public function findTracks(int $id): array
     {
         $stmt = $this->db->prepare("
-            SELECT id, title, notes
-            FROM tracks
-            WHERE release_id = ?
-            ORDER BY id
+            SELECT t.id, t.title, t.notes,
+                   (SELECT COUNT(*) FROM track_samples_ref tsr WHERE tsr.track_id = t.id) AS sample_count
+            FROM tracks t
+            WHERE t.release_id = ?
+            ORDER BY t.id
         ");
         $stmt->execute([$id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

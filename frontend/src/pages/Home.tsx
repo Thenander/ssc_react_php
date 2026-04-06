@@ -30,7 +30,9 @@ export default function Home() {
             >
               <div>
                 <div className="text-white font-semibold">{r.title}</div>
-                {r.artist && <div className="text-gray-400 text-sm">{r.artist}</div>}
+                {r.sample_count != null && r.sample_count > 0 && (
+                  <div className="text-gray-400 text-sm">{r.sample_count} sample{r.sample_count !== 1 ? 's' : ''}</div>
+                )}
               </div>
               <div className="text-right text-sm text-gray-400">
                 {r.year && <div>{r.year}</div>}

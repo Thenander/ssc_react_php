@@ -49,9 +49,13 @@ export default function AdminReleases() {
     });
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Delete this release?')) return;
-    await deleteRelease(id);
+  const handleDelete = async (r: Release) => {
+    const count = r.track_count ?? 0;
+    const warning = count > 0
+      ? `Warning: this release has ${count} linked track${count !== 1 ? 's' : ''} that will lose their release reference.\n\n`
+      : '';
+    if (!window.confirm(`${warning}Delete "${r.title}"?`)) return;
+    await deleteRelease(r.id);
     load();
   };
 
@@ -95,7 +99,7 @@ export default function AdminReleases() {
               </div>
               <div className="flex gap-3">
                 <button onClick={() => handleEdit(r)} className="text-blue-400 hover:text-blue-300 text-sm transition-colors">Edit</button>
-                <button onClick={() => handleDelete(r.id)} className="text-red-400 hover:text-red-300 text-sm transition-colors">Delete</button>
+                <button onClick={() => handleDelete(r)} className="text-red-400 hover:text-red-300 text-sm transition-colors">Delete</button>
               </div>
             </div>
           ))}

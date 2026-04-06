@@ -6,6 +6,7 @@ const links = [
   { to: '/admin/tracks', label: 'Tracks' },
   { to: '/admin/sources', label: 'Sources' },
   { to: '/admin/samples', label: 'Samples' },
+  { to: '/admin/types', label: 'Types' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

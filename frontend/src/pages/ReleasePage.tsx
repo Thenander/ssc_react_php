@@ -48,7 +48,10 @@ export default function ReleasePage() {
               className="flex items-center gap-4 bg-gray-800 hover:bg-gray-700 transition-colors rounded-lg px-5 py-3"
             >
               <span className="text-gray-500 text-sm w-6 text-right">{i + 1}</span>
-              <span className="text-white">{track.title}</span>
+              <span className="text-white flex-1">{track.title}</span>
+              {track.sample_count != null && track.sample_count > 0 && (
+                <span className="text-gray-500 text-xs">{track.sample_count} sample{track.sample_count !== 1 ? 's' : ''}</span>
+              )}
             </Link>
           </li>
         ))}

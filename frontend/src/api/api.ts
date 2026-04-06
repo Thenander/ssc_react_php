@@ -50,6 +50,9 @@ export const login = (username: string, password: string) =>
 // Types
 export const getTypes = () => get<any[]>('/types');
 export const getTypesByCategory = (category: string) => get<any[]>(`/types/${category}`);
+export const createType = (data: object) => post<any>('/types', data);
+export const updateType = (id: number, data: object) => put<any>(`/types/${id}`, data);
+export const deleteType = (id: number) => del<any>(`/types/${id}`);
 
 // Releases
 export const getReleases = () => get<any[]>('/releases');

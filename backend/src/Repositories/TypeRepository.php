@@ -33,4 +33,28 @@ class TypeRepository
         $type = $stmt->fetch(PDO::FETCH_ASSOC);
         return $type ?: null;
     }
+
+    public function create(string $category, string $type, string $text): array
+    {
+        $stmt = $this->db->prepare(
+            "INSERT INTO types (category, type, text, created, changed) VALUES (?, ?, ?, NOW(), NOW())"
+        );
+        $stmt->execute([$category, $type, $text]);
+        return $this->find((int) $this->db->lastInsertId());
+    }
+
+    public function update(int $id, string $type, string $text): ?array
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE types SET type = ?, text = ?, changed = NOW() WHERE id = ?"
+        );
+        $stmt->execute([$type, $text, $id]);
+        return $this->find($id);
+    }
+
+    public function delete(int $id): bool
+    {
+        $stmt = $this->db->prepare("DELETE FROM types WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }

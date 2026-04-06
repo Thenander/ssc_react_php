@@ -143,6 +143,17 @@ $app->group('/api', function ($group) use ($pdo) {
         return (new SampleController($pdo))->delete($req, $res, $args);
     });
 
+    // Types
+    $group->post('/types', function ($req, $res) use ($pdo) {
+        return (new TypeController($pdo))->create($req, $res);
+    });
+    $group->put('/types/{id}', function ($req, $res, $args) use ($pdo) {
+        return (new TypeController($pdo))->update($req, $res, $args);
+    });
+    $group->delete('/types/{id}', function ($req, $res, $args) use ($pdo) {
+        return (new TypeController($pdo))->delete($req, $res, $args);
+    });
+
     // Koppla/ta bort sample från track
     $group->post('/samples/{id}/tracks/{track_id}', function ($req, $res, $args) use ($pdo) {
         return (new SampleController($pdo))->attachToTrack($req, $res, $args);

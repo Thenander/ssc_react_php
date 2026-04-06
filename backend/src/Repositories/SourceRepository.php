@@ -16,7 +16,8 @@ class SourceRepository
     public function all(): array
     {
         $stmt = $this->db->query("
-            SELECT s.*, t.text AS type_text
+            SELECT s.*, t.text AS type_text,
+                   (SELECT COUNT(*) FROM samples sa WHERE sa.source_id = s.id) AS sample_count
             FROM sources s
             LEFT JOIN types t ON s.type_id = t.id
             ORDER BY s.title

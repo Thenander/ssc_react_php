@@ -15,6 +15,7 @@ import AdminReleases from './pages/admin/AdminReleases';
 import AdminTracks from './pages/admin/AdminTracks';
 import AdminSources from './pages/admin/AdminSources';
 import AdminSamples from './pages/admin/AdminSamples';
+import AdminTypes from './pages/admin/AdminTypes';
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="/admin/tracks" element={<ProtectedRoute><AdminTracks /></ProtectedRoute>} />
         <Route path="/admin/sources" element={<ProtectedRoute><AdminSources /></ProtectedRoute>} />
         <Route path="/admin/samples" element={<ProtectedRoute><AdminSamples /></ProtectedRoute>} />
+        <Route path="/admin/types" element={<ProtectedRoute><AdminTypes /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

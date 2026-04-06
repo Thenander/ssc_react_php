@@ -49,9 +49,13 @@ export default function AdminSources() {
     });
   };
 
-  const handleDelete = async (id: number) => {
-    if (!window.confirm('Delete this source?')) return;
-    await deleteSource(id);
+  const handleDelete = async (s: Source) => {
+    const count = s.sample_count ?? 0;
+    const warning = count > 0
+      ? `Warning: this source has ${count} linked sample${count !== 1 ? 's' : ''} that will lose their source reference.\n\n`
+      : '';
+    if (!window.confirm(`${warning}Delete "${s.title}"?`)) return;
+    await deleteSource(s.id);
     load();
   };
 
@@ -95,7 +99,7 @@ export default function AdminSources() {
               </div>
               <div className="flex gap-3">
                 <button onClick={() => handleEdit(s)} className="text-blue-400 hover:text-blue-300 text-sm transition-colors">Edit</button>
-                <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:text-red-300 text-sm transition-colors">Delete</button>
+                <button onClick={() => handleDelete(s)} className="text-red-400 hover:text-red-300 text-sm transition-colors">Delete</button>
               </div>
             </div>
           ))}
