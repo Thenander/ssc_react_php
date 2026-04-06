@@ -1,7 +1,8 @@
 # SSC React + PHP Backend
 
-This project contains a **React frontend** and a **PHP Slim backend** with MySQL.  
-The backend uses JWT for admin login and has protected endpoints for POST/PUT/DELETE operations.
+A sample-tracking app for documenting which audio samples appear in which tracks. Built with a **React + TypeScript frontend** and a **PHP Slim 4 backend** with MySQL.
+
+The backend uses JWT for admin authentication and has protected endpoints for all write operations.
 
 ---
 
@@ -9,12 +10,21 @@ The backend uses JWT for admin login and has protected endpoints for POST/PUT/DE
 
 ```
 ssc_react_php/
-├── backend/       # PHP Slim API
-│   ├── public/    # Entrypoint for API (index.php)
-│   ├── src/       # Controllers, Middleware, Repositories
-│   └── config/    # Database and JWT configuration
-├── frontend/      # React frontend
-└── .gitignore
+├── backend/
+│   ├── config/        # Database and JWT configuration
+│   ├── dbDumps/       # Schema and data dumps
+│   ├── public/        # API entry point (index.php)
+│   └── src/
+│       ├── Controllers/   # Request handlers
+│       ├── Middleware/    # JWT validation
+│       └── Repositories/  # Database operations
+├── frontend/
+│   └── src/
+│       ├── api/           # Fetch wrapper (api.ts)
+│       ├── components/    # Navbar, AdminLayout, ProtectedRoute
+│       ├── pages/         # Public and admin pages
+│       └── types.ts       # TypeScript interfaces
+└── README.md
 ```
 
 ---
@@ -28,155 +38,140 @@ ssc_react_php/
 
 ---
 
-## Step 1: Backend
+## Setup
 
-1. **Clone the repo and go to backend:**
+### 1. Database
+
+Create and import the schema:
 
 ```bash
-cd ssc_react_php/backend
+mysql -u root -p < backend/dbDumps/schema.sql
 ```
 
-2. **Install dependencies:**
+Then create an admin user with a bcrypt-hashed password:
+
+```sql
+INSERT INTO admins (username, password) VALUES ('admin', '$2y$10$...');
+```
+
+Generate a hash with PHP:
 
 ```bash
+php -r "echo password_hash('your_password', PASSWORD_BCRYPT);"
+```
+
+### 2. Backend
+
+```bash
+cd backend
 composer install
 ```
 
-3. **Create a .env file in the backend folder**  
-   Example `.env`:
+Create a `.env` file:
 
 ```env
 JWT_SECRET=your_jwt_secret_here
-
 DB_HOST=localhost
-DB_NAME=database_name
+DB_NAME=bimbodb
 DB_USER=root
 DB_PASSWORD=your_db_password_here
 ```
 
-4. **Start the backend server:**
+Start the server:
 
 ```bash
 npm start
 ```
 
-Default URL: `http://localhost:8000`
+Runs on `http://localhost:8000`.
 
----
-
-## Step 2: Database
-
-# TODO
-
-1. Create the database `bimbodb` (if not already created):
-
-```sql
-CREATE DATABASE bimbodb CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-```
-
-2. Import tables (example):
-
-- `admins`
-- `releases`
-- `tracks`
-- `sources`
-- `samples`
-- `track_samples_ref`
-
-> Tip: Create an admin account with a hashed password using PHP (`password_hash`).
-
----
-
-## Step 3: Frontend
-
-1. Go to the frontend folder:
+### 3. Frontend
 
 ```bash
-cd ../frontend
-```
-
-2. Install npm packages:
-
-```bash
+cd frontend
 npm install
-```
-
-3. Start React:
-
-```bash
 npm start
 ```
 
-Default URL: `http://localhost:3000`  
-The frontend can now fetch from the backend via `fetch('http://localhost:8000/api/...')`.
-
-> Note: The backend must have **CORS enabled** (already configured in `index.php`).
+Runs on `http://localhost:3000`.
 
 ---
 
-## Step 4: Test the API
+## Data Model
 
-- **Test root endpoint:**  
-  `GET http://localhost:8000/api/test`
-
-- **Get tracks:**  
-  `GET http://localhost:8000/api/tracks`
-
-- **Admin login:**  
-  `POST http://localhost:8000/api/auth/login`  
-  Request JSON body:
-
-```json
-{
-  "username": "admin",
-  "password": "secret123"
-}
+```
+releases ──< tracks >──< track_samples_ref >──< samples >── sources
+    │                                               │
+  types                                           types
 ```
 
-Response:
+- **Releases** — albums, EPs, singles etc. (typed)
+- **Tracks** — songs belonging to a release
+- **Sources** — origin media: movies, TV series, albums, sample CDs (typed)
+- **Samples** — individual audio clips from a source (typed)
+- **track_samples_ref** — many-to-many join between tracks and samples
+- **Types** — shared category table for releases, sources and samples
 
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
+---
 
-- **Create track (requires token):**  
-  `POST http://localhost:8000/api/tracks`  
-  Header:
+## API Endpoints
+
+### Public (no auth required)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/types` | All types |
+| GET | `/api/types/{category}` | Types by category (`release`, `source`, `sample`) |
+| GET | `/api/releases` | All releases (sorted by year) |
+| GET | `/api/releases/{id}` | Release with tracks and sample counts |
+| GET | `/api/tracks` | All tracks with samples |
+| GET | `/api/tracks/{id}` | Track with samples and source info |
+| GET | `/api/sources` | All sources |
+| GET | `/api/sources/{id}` | Source with samples |
+| GET | `/api/samples` | All samples |
+| GET | `/api/samples/{id}` | Sample with linked tracks |
+
+### Protected (JWT required)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/auth/login` | Authenticate, returns JWT |
+| POST/PUT/DELETE | `/api/releases/{id?}` | Create, update, delete release |
+| POST/PUT/DELETE | `/api/tracks/{id?}` | Create, update, delete track |
+| POST/PUT/DELETE | `/api/sources/{id?}` | Create, update, delete source |
+| POST/PUT/DELETE | `/api/samples/{id?}` | Create, update, delete sample |
+| POST/DELETE | `/api/samples/{id}/tracks/{track_id}` | Attach/detach sample from track |
+| POST/PUT/DELETE | `/api/types/{id?}` | Create, update, delete type |
+
+Include the token as a Bearer header:
 
 ```
 Authorization: Bearer YOUR_TOKEN
 ```
 
-Request JSON body:
-
-```json
-{
-  "title": "New Track",
-  "release_id": 1,
-  "type": 1
-}
-```
-
 ---
 
-## Step 5: Structure and further development
+## Admin Interface
 
-- Backend:
-  - `Controllers` – handles routes
-  - `Repositories` – database operations
-  - `Middleware` – JWT + CORS
-- Frontend:
-  - React components + fetch calls to API
-  - Store JWT in `localStorage` for admin-protected calls
+The admin UI is available at `/admin` and requires login.
+
+| Route | Description |
+|-------|-------------|
+| `/admin` | Login |
+| `/admin/dashboard` | Dashboard |
+| `/admin/releases` | Manage releases |
+| `/admin/tracks` | Manage tracks |
+| `/admin/sources` | Manage sources |
+| `/admin/samples` | Manage samples |
+| `/admin/types` | Manage types for releases, sources and samples |
+
+Deleting a release or source that has linked content shows a warning with the number of affected records before confirming.
 
 ---
 
 ## Tips
 
-- Always start the **backend first**, then the frontend
-- Clear `composer cache` or `npm cache` if packages misbehave
-- Verify `.env` and PDO connection before calling routes
-- All POST/PUT/DELETE endpoints must be **protected with JWT**
-- GET endpoints are open for read-only access
+- Start the **backend before** the frontend
+- Verify `.env` values and MySQL connection if routes return 500
+- All GET endpoints are public; all write operations require a valid JWT
+- JWT tokens expire after 24 hours
