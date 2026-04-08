@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom';
-import AdminLayout from '../../components/AdminLayout';
+import { Link } from "react-router-dom";
+import AdminLayout from "../../components/AdminLayout";
 
 const sections = [
-  { to: '/admin/releases', label: 'Releases', desc: 'Add and manage releases' },
-  { to: '/admin/tracks', label: 'Tracks', desc: 'Add and manage tracks' },
-  { to: '/admin/sources', label: 'Sources', desc: 'Add and manage sources' },
-  { to: '/admin/samples', label: 'Samples', desc: 'Add and manage samples' },
+  { to: "/admin/releases", label: "Releases", desc: "Add and manage releases" },
+  { to: "/admin/tracks", label: "Tracks", desc: "Add and manage tracks" },
+  { to: "/admin/sources", label: "Sources", desc: "Add and manage sources" },
+  { to: "/admin/samples", label: "Samples", desc: "Add and manage samples" },
 ];
 
 export default function AdminDashboard() {

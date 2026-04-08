@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getSource } from '../api/api';
-import { Source } from '../types';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getSource } from "../api/api";
+import { Source } from "../types";
 
 export default function SourcePage() {
   const { id } = useParams<{ id: string }>();
@@ -20,7 +20,10 @@ export default function SourcePage() {
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
-      <Link to="/sources" className="text-gray-400 hover:text-white text-sm mb-6 inline-block">
+      <Link
+        to="/sources"
+        className="text-gray-400 hover:text-white text-sm mb-6 inline-block"
+      >
         ← All sources
       </Link>
 
@@ -36,18 +39,25 @@ export default function SourcePage() {
         )}
       </div>
 
-      <h2 className="text-xl font-semibold text-white mb-4">Samples from this source</h2>
+      <h2 className="text-xl font-semibold text-white mb-4">
+        Samples from this source
+      </h2>
       {(!source.samples || source.samples.length === 0) && (
         <p className="text-gray-400">No samples registered from this source.</p>
       )}
       <ul className="flex flex-col gap-3">
         {source.samples?.map((sample: any) => (
           <li key={sample.id} className="bg-gray-800 rounded-lg px-5 py-4">
-            <Link to={`/samples/${sample.id}`} className="text-white font-medium hover:text-blue-300 transition-colors">
+            <Link
+              to={`/samples/${sample.id}`}
+              className="text-white font-medium hover:text-blue-300 transition-colors"
+            >
               {sample.name}
             </Link>
             {sample.type_text && (
-              <div className="text-gray-400 text-xs mt-0.5">{sample.type_text}</div>
+              <div className="text-gray-400 text-xs mt-0.5">
+                {sample.type_text}
+              </div>
             )}
             {sample.notes && (
               <div className="text-gray-300 text-sm mt-2">{sample.notes}</div>
@@ -55,13 +65,23 @@ export default function SourcePage() {
             {sample.tracks && sample.tracks.length > 0 && (
               <ul className="mt-3 flex flex-col gap-1">
                 {sample.tracks.map((track: any) => (
-                  <li key={track.id} className="flex items-center justify-between">
-                    <Link to={`/tracks/${track.id}`} className="text-sm text-blue-400 hover:text-blue-300 transition-colors">
+                  <li
+                    key={track.id}
+                    className="flex items-center justify-between"
+                  >
+                    <Link
+                      to={`/tracks/${track.id}`}
+                      className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                    >
                       {track.title}
                     </Link>
                     {track.release_title && (
-                      <Link to={`/releases/${track.release_id}`} className="text-xs text-gray-400 hover:text-gray-200 transition-colors">
-                        {track.release_title}{track.artist ? ` – ${track.artist}` : ''}
+                      <Link
+                        to={`/releases/${track.release_id}`}
+                        className="text-xs text-gray-400 hover:text-gray-200 transition-colors"
+                      >
+                        {track.release_title}
+                        {track.artist ? ` – ${track.artist}` : ""}
                       </Link>
                     )}
                   </li>

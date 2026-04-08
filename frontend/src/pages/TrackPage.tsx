@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getTrack } from '../api/api';
-import { Track } from '../types';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getTrack } from "../api/api";
+import { Track } from "../types";
 
 export default function TrackPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +25,7 @@ export default function TrackPage() {
           to={`/releases/${track.release_id}`}
           className="text-gray-400 hover:text-white text-sm mb-6 inline-block"
         >
-          ← {track.release_title ?? 'Back'}
+          ← {track.release_title ?? "Back"}
         </Link>
       )}
 
@@ -48,14 +48,21 @@ export default function TrackPage() {
           <li key={sample.id} className="bg-gray-800 rounded-lg px-5 py-4">
             <div className="flex items-start justify-between">
               <div>
-                <Link to={`/samples/${sample.id}`} className="text-white font-medium hover:text-blue-300 transition-colors">
+                <Link
+                  to={`/samples/${sample.id}`}
+                  className="text-white font-medium hover:text-blue-300 transition-colors"
+                >
                   {sample.name}
                 </Link>
                 {sample.type_text && (
-                  <div className="text-gray-400 text-xs mt-0.5">{sample.type_text}</div>
+                  <div className="text-gray-400 text-xs mt-0.5">
+                    {sample.type_text}
+                  </div>
                 )}
                 {sample.notes && (
-                  <div className="text-gray-300 text-sm mt-2">{sample.notes}</div>
+                  <div className="text-gray-300 text-sm mt-2">
+                    {sample.notes}
+                  </div>
                 )}
               </div>
               {sample.source_title && (
@@ -67,7 +74,9 @@ export default function TrackPage() {
                     {sample.source_title}
                   </Link>
                   {sample.producer && (
-                    <div className="text-gray-500 text-xs mt-0.5">{sample.producer}</div>
+                    <div className="text-gray-500 text-xs mt-0.5">
+                      {sample.producer}
+                    </div>
                   )}
                 </div>
               )}

@@ -22,7 +22,30 @@ class SampleRepository
             LEFT JOIN sources so ON sa.source_id = so.id
             ORDER BY sa.name
         ");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $samples = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $trackStmt = $this->db->query("
+            SELECT tsr.sample_id, tr.id, tr.title, r.title AS release_title
+            FROM track_samples_ref tsr
+            JOIN tracks tr ON tsr.track_id = tr.id
+            LEFT JOIN releases r ON tr.release_id = r.id
+        ");
+        $allTrackRows = $trackStmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $tracksBySample = [];
+        foreach ($allTrackRows as $row) {
+            $tracksBySample[$row['sample_id']][] = [
+                'id'            => (int) $row['id'],
+                'title'         => $row['title'],
+                'release_title' => $row['release_title'],
+            ];
+        }
+
+        foreach ($samples as &$sample) {
+            $sample['tracks'] = $tracksBySample[$sample['id']] ?? [];
+        }
+
+        return $samples;
     }
 
     public function find(int $id): ?array

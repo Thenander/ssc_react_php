@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getSample } from '../api/api';
-import { Sample } from '../types';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getSample } from "../api/api";
+import { Sample } from "../types";
 
 export default function SamplePage() {
   const { id } = useParams<{ id: string }>();
@@ -25,7 +25,7 @@ export default function SamplePage() {
           to={`/sources/${sample.source_id}`}
           className="text-gray-400 hover:text-white text-sm mb-6 inline-block"
         >
-          ← {sample.source_title ?? 'Back'}
+          ← {sample.source_title ?? "Back"}
         </Link>
       )}
 
@@ -35,8 +35,11 @@ export default function SamplePage() {
           {sample.type_text && <span>{sample.type_text}</span>}
           {sample.source_title && (
             <span>
-              From{' '}
-              <Link to={`/sources/${sample.source_id}`} className="text-blue-400 hover:text-blue-300">
+              From{" "}
+              <Link
+                to={`/sources/${sample.source_id}`}
+                className="text-blue-400 hover:text-blue-300"
+              >
                 {sample.source_title}
               </Link>
             </span>
@@ -62,7 +65,7 @@ export default function SamplePage() {
               {track.release_title && (
                 <span className="text-gray-400 text-sm">
                   {track.release_title}
-                  {track.artist ? ` – ${track.artist}` : ''}
+                  {track.artist ? ` – ${track.artist}` : ""}
                 </span>
               )}
             </Link>

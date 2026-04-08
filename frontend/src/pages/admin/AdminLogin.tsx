@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../../api/api';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../../api/api";
 
 export default function AdminLogin() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       const { token } = await login(username, password);
-      localStorage.setItem('token', token);
-      navigate('/admin/dashboard');
+      localStorage.setItem("token", token);
+      navigate("/admin/dashboard");
     } catch {
-      setError('Invalid username or password.');
+      setError("Invalid username or password.");
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export default function AdminLogin() {
             disabled={loading}
             className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-semibold rounded-lg px-4 py-2 transition-colors"
           >
-            {loading ? 'Logging in...' : 'Log in'}
+            {loading ? "Logging in..." : "Log in"}
           </button>
         </form>
       </div>

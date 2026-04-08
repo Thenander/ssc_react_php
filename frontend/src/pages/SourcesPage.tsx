@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getSources } from '../api/api';
-import { Source } from '../types';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getSources } from "../api/api";
+import { Source } from "../types";
 
 export default function SourcesPage() {
   const [sources, setSources] = useState<Source[]>([]);
@@ -18,9 +18,7 @@ export default function SourcesPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
       <h1 className="text-3xl font-bold text-white mb-8">Sources</h1>
-      {sources.length === 0 && (
-        <p className="text-gray-400">No sources yet.</p>
-      )}
+      {sources.length === 0 && <p className="text-gray-400">No sources yet.</p>}
       <ul className="flex flex-col gap-3">
         {sources.map((s) => (
           <li key={s.id}>
@@ -30,7 +28,9 @@ export default function SourcesPage() {
             >
               <div>
                 <div className="text-white font-semibold">{s.title}</div>
-                {s.producer && <div className="text-gray-400 text-sm">{s.producer}</div>}
+                {s.producer && (
+                  <div className="text-gray-400 text-sm">{s.producer}</div>
+                )}
               </div>
               <div className="text-right text-sm text-gray-400">
                 {s.year && <div>{s.year}</div>}

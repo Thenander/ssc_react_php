@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getReleases } from '../api/api';
-import { Release } from '../types';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getReleases } from "../api/api";
+import { Release } from "../types";
 
 export default function Home() {
   const [releases, setReleases] = useState<Release[]>([]);
@@ -31,7 +31,9 @@ export default function Home() {
               <div>
                 <div className="text-white font-semibold">{r.title}</div>
                 {r.sample_count != null && r.sample_count > 0 && (
-                  <div className="text-gray-400 text-sm">{r.sample_count} sample{r.sample_count !== 1 ? 's' : ''}</div>
+                  <div className="text-gray-400 text-sm">
+                    {r.sample_count} sample{r.sample_count !== 1 ? "s" : ""}
+                  </div>
                 )}
               </div>
               <div className="text-right text-sm text-gray-400">

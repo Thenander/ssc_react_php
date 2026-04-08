@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getRelease } from '../api/api';
-import { Release } from '../types';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { getRelease } from "../api/api";
+import { Release } from "../types";
 
 export default function ReleasePage() {
   const { id } = useParams<{ id: string }>();
@@ -16,11 +16,15 @@ export default function ReleasePage() {
   }, [id]);
 
   if (loading) return <div className="p-8 text-gray-400">Loading...</div>;
-  if (!release) return <div className="p-8 text-red-400">Release not found.</div>;
+  if (!release)
+    return <div className="p-8 text-red-400">Release not found.</div>;
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10">
-      <Link to="/" className="text-gray-400 hover:text-white text-sm mb-6 inline-block">
+      <Link
+        to="/"
+        className="text-gray-400 hover:text-white text-sm mb-6 inline-block"
+      >
         ← All releases
       </Link>
 
@@ -47,10 +51,15 @@ export default function ReleasePage() {
               to={`/tracks/${track.id}`}
               className="flex items-center gap-4 bg-gray-800 hover:bg-gray-700 transition-colors rounded-lg px-5 py-3"
             >
-              <span className="text-gray-500 text-sm w-6 text-right">{i + 1}</span>
+              <span className="text-gray-500 text-sm w-6 text-right">
+                {i + 1}
+              </span>
               <span className="text-white flex-1">{track.title}</span>
               {track.sample_count != null && track.sample_count > 0 && (
-                <span className="text-gray-500 text-xs">{track.sample_count} sample{track.sample_count !== 1 ? 's' : ''}</span>
+                <span className="text-gray-500 text-xs">
+                  {track.sample_count} sample
+                  {track.sample_count !== 1 ? "s" : ""}
+                </span>
               )}
             </Link>
           </li>
