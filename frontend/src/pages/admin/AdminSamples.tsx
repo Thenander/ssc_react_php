@@ -263,9 +263,6 @@ export default function AdminSamples() {
                             );
                           return all.map((t) => {
                             const alreadyAttached = attachedIds.has(t.id);
-                            console.log("attachedIds", attachedIds);
-                            console.log("alreadyAttached", alreadyAttached);
-
                             return (
                               <li
                                 key={t.id}
