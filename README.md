@@ -193,6 +193,14 @@ npm run build
 
 ### 2. Upload files via SCP
 
+Run the deploy script from the project root:
+
+```bash
+./deploy.sh
+```
+
+This builds the frontend and uploads all necessary files to the server. To deploy manually:
+
 ```bash
 scp -r "/path/to/frontend/build/." user@host:public_html/cultivatedbimbo/
 scp -r "/path/to/backend/src" user@host:public_html/cultivatedbimbo/
